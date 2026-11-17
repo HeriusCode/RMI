@@ -36,6 +36,7 @@ public final class ServerConfig {
             source = "classpath:/server2.properties (cau hinh mau)";
         }
 
+        normalizeDatabaseProperties(properties);
         Map<String, String> environmentOverrides = new LinkedHashMap<>();
         environmentOverrides.put("RMI_DB_URL", "db.url");
         environmentOverrides.put("RMI_DB_USER", "db.user");
@@ -48,6 +49,18 @@ public final class ServerConfig {
         applyEnvironment(properties, environmentOverrides);
 
         return new ServerConfig(properties, source);
+    }
+
+    private static void normalizeDatabaseProperties(Properties properties) {
+        copyIfPresent(properties, "DB_URL", "db.url");
+        copyIfPresent(properties, "DB_USER", "db.user");
+        copyIfPresent(properties, "DB_PASSWORD", "db.password");
+    }
+
+    private static void copyIfPresent(Properties properties, String sourceKey, String targetKey) {
+        if (!properties.containsKey(targetKey) && properties.containsKey(sourceKey)) {
+            properties.setProperty(targetKey, properties.getProperty(sourceKey));
+        }
     }
 
     private static Path findConfigPath(String explicitPath) {

@@ -97,9 +97,10 @@ Các JAR đã đóng gói dependency cần thiết. Client JAR được build ch
 Chép `server-1.jar` sang Máy thật 1 và tạo file `server1.properties` cạnh JAR:
 
 ```properties
-db.url=jdbc:postgresql://127.0.0.1:5432/rmi_student_server1
-db.user=rmi_user
-db.password=MAT_KHAU_THAT
+STORAGE_BACKEND=POSTGRESQL
+DB_URL=jdbc:postgresql://127.0.0.1:5432/rmi_student_server1
+DB_USER=rmi_user
+DB_PASSWORD=MAT_KHAU_THAT
 rmi.host=192.168.1.10
 rmi.port=1099
 rmi.servicePort=1100
@@ -116,6 +117,7 @@ Lệnh trên vừa khởi động dịch vụ RMI vừa mở dashboard JavaFX c�
 Trước khi dashboard mở, Server 1 hiển thị hộp cấu hình để nhập IP/hostname, cổng Registry và cổng Service. Giá trị được lưu vào `server1.properties` ở thư mục chạy.
 
 `rmi.host` phải là IP LAN mà Server 2 và máy ảo truy cập được, không dùng `127.0.0.1`.
+Server đọc các khóa database `STORAGE_BACKEND`, `DB_URL`, `DB_USER` và `DB_PASSWORD`.
 
 Khi chạy trực tiếp `Server1Main.java` trong IDE với thư mục làm việc là thư mục gốc dự án, hãy tạo `server1.properties` tại `D:\RMI\server1.properties`. Chương trình ưu tiên file này thay cho cấu hình mẫu trong `resources`.
 
@@ -142,9 +144,10 @@ Cấu hình này chỉ dùng để kiểm tra RMI trên một máy. Khi triển 
 Chép `server-2.jar` sang Máy thật 2 và tạo `server2.properties`:
 
 ```properties
-db.url=jdbc:postgresql://127.0.0.1:5432/rmi_student_server2
-db.user=rmi_user
-db.password=MAT_KHAU_THAT
+STORAGE_BACKEND=POSTGRESQL
+DB_URL=jdbc:postgresql://127.0.0.1:5432/rmi_student_server2
+DB_USER=rmi_user
+DB_PASSWORD=MAT_KHAU_THAT
 rmi.host=192.168.1.20
 rmi.port=1099
 rmi.servicePort=1100
