@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.rmi.client.controller.MainController"
+            styleClass="app-root">
+    <top>
+        <VBox styleClass="header" spacing="6">
+            <padding><Insets top="22" right="32" bottom="22" left="32"/></padding>
+            <HBox alignment="CENTER_LEFT" spacing="16">
+                <Label text="DB" styleClass="logo"/>
+                <VBox spacing="3" HBox.hgrow="ALWAYS">
+                    <Label text="HỆ THỐNG PHÂN TÁN • JAVA RMI • POSTGRESQL" styleClass="eyebrow"/>
+                    <Label text="Đồng bộ dữ liệu sinh viên" styleClass="header-title"/>
+                    <Label text="Client cục bộ  →  quản lý Server 1 / Server 2  →  kiểm tra đồng bộ" styleClass="header-subtitle"/>
+                </VBox>
+                <ProgressIndicator fx:id="progressIndicator" visible="false" maxWidth="30" maxHeight="30"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="page-scroll">
+            <VBox spacing="18" styleClass="page">
+                <padding><Insets top="22" right="28" bottom="26" left="28"/></padding>
+
+                <VBox spacing="12" styleClass="card">
+                    <HBox alignment="CENTER_LEFT">
+                        <VBox spacing="2" HBox.hgrow="ALWAYS">
+                            <Label text="Cấu hình kết nối" styleClass="section-title"/>
+                            <Label text="Dùng 127.0.0.1 khi Client và hai Server chạy trên cùng máy" styleClass="muted"/>
+                        </VBox>
+                        <HBox spacing="8">
+                            <Label fx:id="server1StatusLabel" text="SERVER 1 CHƯA KIỂM TRA"
+                                   styleClass="status-badge,status-neutral"/>
+                            <Label fx:id="server2StatusLabel" text="SERVER 2 CHƯA KIỂM TRA"
+                                   styleClass="status-badge,status-neutral"/>
+                        </HBox>
+                    </HBox>
+                    <GridPane hgap="12" vgap="6">
+                        <columnConstraints>
+                            <ColumnConstraints percentWidth="31"/>
+                            <ColumnConstraints percentWidth="11"/>
+                            <ColumnConstraints percentWidth="31"/>
+                            <ColumnConstraints percentWidth="11"/>
+                            <ColumnConstraints percentWidth="16"/>
+                        </columnConstraints>
+                        <Label text="IP / HOSTNAME SERVER 1" styleClass="field-label" GridPane.columnIndex="0"/>
+                        <Label text="CỔNG" styleClass="field-label" GridPane.columnIndex="1"/>
+                        <Label text="IP / HOSTNAME SERVER 2" styleClass="field-label" GridPane.columnIndex="2"/>
+                        <Label text="CỔNG" styleClass="field-label" GridPane.columnIndex="3"/>
+                        <TextField fx:id="server1HostField" promptText="192.168.1.10"
+                                   GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <TextField fx:id="server1PortField" promptText="1099"
+                                   GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <TextField fx:id="server2HostField" promptText="192.168.1.20"
+                                   GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                        <TextField fx:id="server2PortField" promptText="1099"
+                                   GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+                        <Button text="Lưu &amp; kết nối" onAction="#onApplyConfiguration"
+                                styleClass="button-primary" maxWidth="Infinity"
+                                GridPane.columnIndex="4" GridPane.rowIndex="1"/>
+                    </GridPane>
+                </VBox>
+
+                <HBox spacing="18">
+                    <VBox spacing="18" HBox.hgrow="ALWAYS">
+                        <VBox spacing="12" styleClass="card">
+                            <VBox spacing="2">
+                                <Label text="Thông tin sinh viên" styleClass="section-title"/>
+                                <Label text="Chọn lưu riêng Server 1 hoặc lưu Server 2 và đồng bộ" styleClass="muted"/>
+                            </VBox>
+                            <GridPane hgap="12" vgap="6">
+                                <columnConstraints>
+                                    <ColumnConstraints percentWidth="25"/>
+                                    <ColumnConstraints percentWidth="47"/>
+                                    <ColumnConstraints percentWidth="28"/>
+                                </columnConstraints>
+                                <Label text="MÃ SINH VIÊN" styleClass="field-label" GridPane.columnIndex="0"/>
+                                <Label text="HỌ VÀ TÊN" styleClass="field-label" GridPane.columnIndex="1"/>
+                                <Label text="LỚP" styleClass="field-label" GridPane.columnIndex="2"/>
+                                <TextField fx:id="studentIdField" promptText="SV001"
+                                           GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                <TextField fx:id="fullNameField" promptText="Nguyễn Văn A"
+                                           GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                <TextField fx:id="classNameField" promptText="CNTT01"
+                                           GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                            </GridPane>
+                            <HBox spacing="10">
+                                <Button fx:id="saveServer1Button" text="Lưu Server 1" onAction="#onSaveServer1"
+                                        styleClass="button-accent"/>
+                                <Button fx:id="saveServer2Button" text="Lưu Server 2 + đồng bộ" onAction="#onSaveServer2"
+                                        styleClass="button-primary"/>
+                                <Button fx:id="deleteServer1Button" text="Xóa Server 1" onAction="#onDeleteServer1"
+                                        styleClass="button-danger"/>
+                                <Button fx:id="deleteServer2Button" text="Xóa Server 2" onAction="#onDeleteServer2"
+                                        styleClass="button-danger"/>
+                                <Button text="Làm trống" onAction="#onClear" styleClass="button-secondary"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="compareButton" text="So sánh hai DB" onAction="#onCompare"
+                                        styleClass="button-accent"/>
+                                <Button text="Đối soát toàn bộ" onAction="#onAudit"
+                                        styleClass="button-accent"/>
+                            </HBox>
+                        </VBox>
+
+                        <VBox spacing="12" styleClass="card" VBox.vgrow="ALWAYS">
+                            <HBox alignment="CENTER_LEFT" spacing="10">
+                                <VBox spacing="2" HBox.hgrow="ALWAYS">
+                                    <Label text="Danh sách sinh viên" styleClass="section-title"/>
+                                    <Label text="Dữ liệu đang hoạt động trên Server 1 và Server 2" styleClass="muted"/>
+                                </VBox>
+                                <TextField fx:id="searchField" promptText="Tìm mã, tên hoặc lớp…"
+                                           prefWidth="230" onAction="#onSearch"/>
+                                <Button text="Tìm kiếm" onAction="#onSearch" styleClass="button-secondary"/>
+                                <Button text="Làm mới" onAction="#onRefresh" styleClass="button-secondary"/>
+                            </HBox>
+                            <TableView fx:id="studentTable" prefHeight="310" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="idColumn" text="Mã sinh viên" prefWidth="125"/>
+                                    <TableColumn fx:id="nameColumn" text="Họ và tên" prefWidth="245"/>
+                                    <TableColumn fx:id="classColumn" text="Lớp" prefWidth="120"/>
+                                    <TableColumn fx:id="updatedColumn" text="Cập nhật" prefWidth="170"/>
+                                </columns>
+                                <placeholder>
+                                    <Label text="Chưa có dữ liệu. Hãy kết nối và nhấn Làm mới." styleClass="muted"/>
+                                </placeholder>
+                            </TableView>
+                        </VBox>
+                    </VBox>
+
+                    <VBox spacing="14" prefWidth="340" minWidth="310">
+                        <VBox spacing="12" styleClass="card" VBox.vgrow="ALWAYS">
+                            <HBox alignment="CENTER_LEFT">
+                                <VBox spacing="2" HBox.hgrow="ALWAYS">
+                                    <Label text="Server 2" styleClass="server-title"/>
+                                    <Label text="Database nguồn" styleClass="muted"/>
+                                </VBox>
+                                <Label text="S2" styleClass="server-icon-blue"/>
+                            </HBox>
+                            <Separator/>
+                            <Label fx:id="server2DataLabel" text="Chưa kiểm tra bản ghi"
+                                   wrapText="true" styleClass="record-text"/>
+                        </VBox>
+                        <VBox spacing="12" styleClass="card" VBox.vgrow="ALWAYS">
+                            <HBox alignment="CENTER_LEFT">
+                                <VBox spacing="2" HBox.hgrow="ALWAYS">
+                                    <Label text="Server 1" styleClass="server-title"/>
+                                    <Label text="Database đích" styleClass="muted"/>
+                                </VBox>
+                                <Label text="S1" styleClass="server-icon-indigo"/>
+                            </HBox>
+                            <Separator/>
+                            <Label fx:id="server1DataLabel" text="Chưa kiểm tra bản ghi"
+                                   wrapText="true" styleClass="record-text"/>
+                        </VBox>
+                        <VBox alignment="CENTER" spacing="8" styleClass="sync-card">
+                            <Label fx:id="syncStatusLabel" text="CHƯA KIỂM TRA"
+                                   styleClass="status-badge,status-neutral"/>
+                            <Label fx:id="messageLabel" text="Hệ thống sẵn sàng"
+                                   wrapText="true" textAlignment="CENTER" styleClass="muted"/>
+                        </VBox>
+                    </VBox>
+                </HBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

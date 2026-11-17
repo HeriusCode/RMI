@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.rmi.server1.ui.Server1Controller" styleClass="app-root">
+    <top>
+        <VBox styleClass="header" spacing="7">
+            <padding><Insets top="20" right="28" bottom="20" left="28"/></padding>
+            <HBox alignment="CENTER_LEFT" spacing="16">
+                <Label text="S1" styleClass="server-logo"/>
+                <VBox spacing="3" HBox.hgrow="ALWAYS">
+                    <Label text="SERVER 1 • DATABASE ĐÍCH" styleClass="eyebrow"/>
+                    <Label text="Trung tâm quản trị bản sao" styleClass="header-title"/>
+                    <Label fx:id="endpointLabel" text="Đang nạp cấu hình…" styleClass="header-subtitle"/>
+                </VBox>
+                <ProgressIndicator fx:id="progressIndicator" visible="false" maxWidth="28" maxHeight="28"/>
+                <Label fx:id="statusLabel" text="ĐANG KHỞI ĐỘNG" styleClass="status-badge,status-ok"/>
+            </HBox>
+        </VBox>
+    </top>
+    <center>
+        <VBox spacing="14" styleClass="page">
+            <padding><Insets top="18" right="24" bottom="20" left="24"/></padding>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label fx:id="countLabel" text="0 SINH VIÊN" styleClass="metric-badge"/>
+                <Label text="Mọi thao tác trong cửa sổ này chỉ thay đổi Database 1"
+                       styleClass="muted" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="messageLabel" text="Hệ thống sẵn sàng" styleClass="message"/>
+            </HBox>
+            <VBox spacing="10" styleClass="card">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <VBox HBox.hgrow="ALWAYS">
+                        <Label text="Cấu hình mạng Server 1" styleClass="section-title"/>
+                        <Label text="Nhập IP và cổng cho Server 1, sau đó nhấn Áp dụng &amp; khởi động lại" styleClass="muted"/>
+                    </VBox>
+                    <Button fx:id="applyNetworkButton" text="Áp dụng &amp; khởi động lại" onAction="#onApplyNetwork" styleClass="button-primary"/>
+                </HBox>
+                <GridPane hgap="12" vgap="6">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="60"/>
+                        <ColumnConstraints percentWidth="40"/>
+                    </columnConstraints>
+                    <Label text="IP / HOSTNAME SERVER 1" styleClass="field-label"/>
+                    <Label text="CỔNG RMI" styleClass="field-label" GridPane.columnIndex="1"/>
+                    <TextField fx:id="hostField" promptText="127.0.0.1" GridPane.rowIndex="1"/>
+                    <TextField fx:id="portField" promptText="1099" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                </GridPane>
+            </VBox>
+            <VBox spacing="10" styleClass="card">
+                <HBox alignment="CENTER_LEFT">
+                    <VBox HBox.hgrow="ALWAYS">
+                        <Label text="Quản lý sinh viên" styleClass="section-title"/>
+                        <Label text="Thêm, cập nhật hoặc xóa trực tiếp dữ liệu cục bộ của Server 1" styleClass="muted"/>
+                    </VBox>
+                    <Button text="Làm mới" onAction="#onRefresh" styleClass="button-secondary"/>
+                </HBox>
+                <GridPane hgap="12" vgap="6">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="22"/><ColumnConstraints percentWidth="48"/>
+                        <ColumnConstraints percentWidth="30"/>
+                    </columnConstraints>
+                    <Label text="MÃ SINH VIÊN" styleClass="field-label"/>
+                    <Label text="HỌ VÀ TÊN" styleClass="field-label" GridPane.columnIndex="1"/>
+                    <Label text="LỚP" styleClass="field-label" GridPane.columnIndex="2"/>
+                    <TextField fx:id="studentIdField" promptText="SV001" GridPane.rowIndex="1"/>
+                    <TextField fx:id="fullNameField" promptText="Nguyễn Văn A" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                    <TextField fx:id="classNameField" promptText="CNTT01" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                </GridPane>
+                <HBox spacing="9">
+                    <Button fx:id="saveButton" text="Lưu Database 1" onAction="#onSave" styleClass="button-primary"/>
+                    <Button fx:id="deleteButton" text="Xóa sinh viên" onAction="#onDelete" styleClass="button-danger"/>
+                    <Button text="Làm trống" onAction="#onClear" styleClass="button-secondary"/>
+                </HBox>
+            </VBox>
+            <SplitPane orientation="VERTICAL" dividerPositions="0.58" VBox.vgrow="ALWAYS">
+                <VBox spacing="10" styleClass="card">
+                    <HBox alignment="CENTER_LEFT" spacing="9">
+                        <Label text="Dữ liệu Database 1" styleClass="section-title" HBox.hgrow="ALWAYS"/>
+                        <TextField fx:id="searchField" promptText="Tìm mã, tên hoặc lớp…" prefWidth="260" onAction="#onSearch"/>
+                        <Button text="Tìm kiếm" onAction="#onSearch" styleClass="button-secondary"/>
+                    </HBox>
+                    <TableView fx:id="studentTable" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="idColumn" text="Mã sinh viên" prefWidth="140"/>
+                            <TableColumn fx:id="nameColumn" text="Họ và tên" prefWidth="340"/>
+                            <TableColumn fx:id="classColumn" text="Lớp" prefWidth="160"/>
+                            <TableColumn fx:id="updatedColumn" text="Cập nhật" prefWidth="190"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+                <VBox spacing="10" styleClass="card">
+                    <Label text="100 sự kiện đồng bộ gần nhất" styleClass="section-title"/>
+                    <TableView fx:id="logTable" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="logTimeColumn" text="Thời gian" prefWidth="165"/>
+                            <TableColumn fx:id="logStudentColumn" text="Sinh viên" prefWidth="120"/>
+                            <TableColumn fx:id="logStatusColumn" text="Trạng thái" prefWidth="110"/>
+                            <TableColumn fx:id="logMessageColumn" text="Nội dung" prefWidth="580"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </SplitPane>
+        </VBox>
+    </center>
+</BorderPane>

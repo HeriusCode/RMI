@@ -1,0 +1,12 @@
+.tools/
+out/
+**/target/
+client.properties
+server1.properties
+server2.properties
+server-1/server1.properties
+server-2/server2.properties
+!client/src/main/resources/client.properties
+!server-1/src/main/resources/server1.properties
+!server-2/src/main/resources/server2.properties
+*.log
